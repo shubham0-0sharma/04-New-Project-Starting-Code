@@ -1,6 +1,6 @@
 import {
   ComponentPropsWithoutRef,
-  type FC,
+  forwardRef,
   type PropsWithChildren,
 } from "react";
 type InputProps = PropsWithChildren<
@@ -10,13 +10,15 @@ type InputProps = PropsWithChildren<
   } & ComponentPropsWithoutRef<"input">
 >;
 
-const Input: FC<InputProps> = ({ children, label, id, ...props }) => {
-  return (
-    <p>
-      <label htmlFor={id}>{label}</label>
-      <input type="text" id={id} {...props} />
-    </p>
-  );
-};
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ children, label, id, ...props }, ref) => {
+    return (
+      <p>
+        <label htmlFor={id}>{label}</label>
+        <input type="text" id={id} {...props} ref={ref} name={id} />
+      </p>
+    );
+  }
+);
 
 export default Input;

@@ -1,15 +1,18 @@
 import { ComponentPropsWithoutRef } from "react";
 
-type ButtonProps = {
-  el: "button";
+type ButtonProps = ComponentPropsWithoutRef<"button"> & {
+  href?: never;
+};
+type AnchorProps = ComponentPropsWithoutRef<"a"> & {
+  href?: string;
+};
+
+// type predicate
+function isAnchorProps(props: ButtonProps | AnchorProps): props is AnchorProps {
+  return "href" in props;
 }
-& ComponentPropsWithoutRef<"button">
-;
-type AnchorProps = {
-  el: "anchor";
-} & ComponentPropsWithoutRef<"a">;
 
 export const Button = (props: ButtonProps | AnchorProps) => {
-  if (props.el === "anchor") return <a className="button" {...props}></a>;
+  if (isAnchorProps(props)) return <a className="button" {...props}></a>;
   return <button className="button" {...props}></button>;
 };
